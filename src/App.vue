@@ -1,30 +1,71 @@
-<script setup>
-import HelloWorld from './components/HelloWorld.vue'
-</script>
-
 <template>
-  <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
-  </div>
-  <HelloWorld msg="Vite + Vue" />
+  <uploader
+      :options="options"
+      :file-status-text="statusText"
+      class="uploader-example"
+      ref="uploaderRef"
+      @file-complete="fileComplete"
+      @complete="complete"
+  ></uploader>
 </template>
 
-<style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
+<script>
+import { nextTick, ref, onMounted } from 'vue'
+export default {
+  setup () {
+    const uploaderRef = ref(null)
+    const options = {
+      target: '//jsonplaceholder.typicode.com/posts/', // '//jsonplaceholder.typicode.com/posts/',
+      testChunks: false
+    }
+    const attrs = {
+      accept: 'image/*'
+    }
+    const statusText = {
+      success: '成功了',
+      error: '出错了',
+      uploading: '上传中',
+      paused: '暂停中',
+      waiting: '等待中'
+    }
+    const complete = function () {
+      console.log('complete', arguments)
+    }
+    const fileComplete = function () {
+      console.log('file complete', arguments)
+    }
+    onMounted(() => {
+      nextTick(() => {
+        window.uploader = uploaderRef.value.uploader
+      })
+    })
+    return {
+      uploaderRef,
+      options,
+      attrs,
+      statusText,
+      complete,
+      fileComplete
+    }
+  }
 }
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
+</script>
+
+<style>
+.uploader-example {
+  width: 880px;
+  padding: 15px;
+  margin: 40px auto 0;
+  font-size: 12px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, .4);
 }
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
+.uploader-example .uploader-btn {
+  margin-right: 4px;
+}
+.uploader-example .uploader-list {
+  max-height: 440px;
+  overflow: auto;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 </style>
