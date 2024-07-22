@@ -15,7 +15,7 @@
 <script>
   import { provide, ref, onUnmounted, getCurrentInstance } from 'vue'
   import Uploader from 'simple-uploader.js'
-  import { kebabCase } from '../common/utils'
+  import { kebabCase } from '../../common/utils.js'
   import UploaderBtn from './btn.vue'
   import UploaderDrop from './drop.vue'
   import UploaderUnsupport from './unsupport.vue'
